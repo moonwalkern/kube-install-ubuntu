@@ -22,7 +22,7 @@ Then you can join any number of worker nodes by running the following on each as
 kubeadm join 10.0.0.48:6443 --token q5ntqk.05kj33m40gas8l6e \
 	--discovery-token-ca-cert-hash sha256:8fafe327bb8908f4b9f42ca760eeca4c97dc5351fb3972f07971c9526c71afeb 
 
---install conda for python
+### install conda for python
 download conda from - https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
 sudo bash Anaconda3-2023.09-0-Linux-x86_64.sh
 install path - /opt/anaconda3
