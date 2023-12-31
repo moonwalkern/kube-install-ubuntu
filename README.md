@@ -31,4 +31,13 @@ sudo chgrp -R anaconda /opt/anaconda3
 sudo adduser scorpion anaconda
 source /opt/anaconda3/bin/activate
 conda init
+### install juypter lab
+pip install jupyterlab
+jupyter lab
+cd .jupyter
+jupyter notebook --generate-config
+vi jupyter_notebook_config.py
+c.NotebookApp.ip = '0.0.0.0'
+c.NotebookApp.token = ''
+
 
