@@ -80,7 +80,7 @@ to access the dashboard once it is enabled, find the url with this command.
 ```
 m kubectl describe service/kubernetes-dashboard -n kube-system
 ```
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 
 Check for the endpoint with port 443
 
@@ -88,20 +88,20 @@ Now create a port foward to access it locally
 ```
 m kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443
 ```
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 
 open a browser and access the address 127.0.0.1:10443 (the port forwared to)
 
 this will open up a webpage that asks for a token
 
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 
 use the command to generate a token
 ```
 m kubectl create token default
 ```
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
 
 copy and paste the token to the webpage, and will enable the dashboard
 
-![Alt text](image-5.png)
+![Alt text](images/image-5.png)
