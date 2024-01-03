@@ -40,4 +40,14 @@ vi jupyter_notebook_config.py
 c.NotebookApp.ip = '0.0.0.0'
 c.NotebookApp.token = ''
 
+### install microk8s
+Microk8 is one of the kubernetes distribution that we can install on ubuntu linux
+https://microk8s.io/docs/addon-dashboard
+
+#### after installation setup
+all of the microk8 command starts with microk8 kubectl <command>, and to minimise this add an alias to .bashrc script alias m='microk8s'
+
+#### to see cluster info
+
+
 
