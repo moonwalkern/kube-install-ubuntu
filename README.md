@@ -47,7 +47,16 @@ https://microk8s.io/docs/addon-dashboard
 #### after installation setup
 all of the microk8 command starts with microk8 kubectl <command>, and to minimise this add an alias to .bashrc script alias m='microk8s'
 
+```
+echo "alias vps='microk8s'" >> ~/.bashrc
+```
+
 #### to see cluster info
-
-
+```
+m kubectl cluster-info
+```
+#### to see cluster all namespaces
+```
+m kubectl get all --all-namespaces
+```
 
