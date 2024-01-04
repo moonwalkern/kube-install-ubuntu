@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-api
+spec:
+  selector:
+    matchLabels:
+      app: fast-api
+  replicas: 3 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: fast-api
+    spec:
+      containers:
+      - name: fast-api
+        image: sreeji/k8s-init:0.3
+        env:
+        - name: ENV
+          value: "mkube"
+        ports:
+        - containerPort: 80

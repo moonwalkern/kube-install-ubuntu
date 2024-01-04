@@ -105,3 +105,89 @@ m kubectl create token default
 copy and paste the token to the webpage, and will enable the dashboard
 
 ![Alt text](images/image-5.png)
+
+### initial basic FASTAPI pod deployment
+Fast API is one of the best simple HTTP server based on python
+https://fastapi.tiangolo.com/
+
+install the required python libs
+
+```
+pip install fastapi
+pip install uvicorn
+```
+
+#### Create a sample code using example link - https://fastapi.tiangolo.com/#create-it 
+
+```python
+from typing import Union
+import os
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": f"{os.environ.get('ENV','Default env')}"}
+```
+
+#### Create a docker image using the link - https://fastapi.tiangolo.com/deployment/docker/
+
+```
+FROM python:3.11
+
+WORKDIR /code
+
+COPY ./requirements.txt /code/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
+COPY ./app /code/app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+```
+
+#### push the image to docker hub 
+build docker image (run the command from the path that has Dockerfile)
+```
+docker build .
+```
+create a tag 
+```
+docker build -t k8s-init .
+```
+run the image
+```
+docker run -p 8000:80 k8s-init
+```
+login to the docker hub using username and password
+```
+docker login
+```
+create a new rep in docker hub ex. <username>/k8s-init
+```
+docker build -t <username>/k8s-init:0.1 .
+```
+push the image to docker hub
+```
+docker push <username> /k8s-init:0.1
+```
+
+test for http access using the pod
+```
+m kubectl get pods
+```
+>NAME                        READY   STATUS    RESTARTS       AGE
+>fast-api-6f97d49975-6pr4r   1/1     Running   2 (3h3m ago)   4h17m
+fast-api-6f97d49975-dqdnn   1/1     Running   2 (3h3m ago)   4h18m
+fast-api-6f97d49975-j94gb   1/1     Running   2 (3h3m ago)   4h17m
+
+port forwarding will enable the access
+```
+m kubectl port-forward fast-api-6f97d49975-6pr4r 8080:80
+```
+#### traefik ingress controller
+
+https://doc.traefik.io/traefik/providers/kubernetes-ingress/
