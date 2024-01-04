@@ -174,20 +174,100 @@ push the image to docker hub
 ```
 docker push <username> /k8s-init:0.1
 ```
+#### Create Kubenetes service for FastAPI http access
+To build a http pod, it requires to have:</br>
++ create fast api pod[s]</br>
++ create fast api service </br>
++ create fast api ingress </br>
 
-test for http access using the pod
+#### building fast api pods using deployment templates
+
+use this link for pod deployment template - https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-api
+spec:
+  selector:
+    matchLabels:
+      app: fast-api
+  replicas: 3 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: fast-api
+    spec:
+      containers:
+      - name: fast-api
+        image: <username>/k8s-init:0.3 ----image from docker hub
+        env:
+        - name: ENV
+          value: "mkube"
+        ports:
+        - containerPort: 80
+
+```
+use this link for service deployment template - https://kubernetes.io/docs/concepts/services-networking/service/
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: fast-api
+spec:
+  selector:
+    app: fast-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+```
+
+use this link for ingress traefik deployment template - https://doc.traefik.io/traefik/providers/kubernetes-ingress/
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fast-api
+
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name:  fast-api
+                port:
+                  number: 80
+```
+apply the deployments
+
+```
+m kubectl apply -f .
+```
+
+#### test for http access using the pod
 ```
 m kubectl get pods
 ```
->NAME                        READY   STATUS    RESTARTS       AGE
->fast-api-6f97d49975-6pr4r   1/1     Running   2 (3h3m ago)   4h17m
-fast-api-6f97d49975-dqdnn   1/1     Running   2 (3h3m ago)   4h18m
-fast-api-6f97d49975-j94gb   1/1     Running   2 (3h3m ago)   4h17m
+![Alt text](images/image-6.png)
 
 port forwarding will enable the access
 ```
 m kubectl port-forward fast-api-6f97d49975-6pr4r 8080:80
 ```
-#### traefik ingress controller
+access service 
+```
+m get services
+```
+![Alt text](images/image-7.png)
 
-https://doc.traefik.io/traefik/providers/kubernetes-ingress/
+acess the http url, from the service pickup the cluster-ip ie. 10.152.183.71 and navigate using a browser
+
+![Alt text](images/image-8.png)
