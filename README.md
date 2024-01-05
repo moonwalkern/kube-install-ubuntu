@@ -72,7 +72,7 @@ m kubectl get all --all-namespaces
 m enable dashboard
 ```
 this will add a new namespace to the k8 deployment
-![Alt text](image.png)
+![Alt text](images/image.png)
 
 #### accessing dashboard
 
